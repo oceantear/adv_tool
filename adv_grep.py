@@ -1,8 +1,13 @@
+from __future__ import division
 import sys,os
 from optparse import OptionParser, make_option
 from datetime import datetime
+import subprocess
+from subprocess import Popen, PIPE, STDOUT
+
 
 tool_version = "1.0"
+match_time = False
 
 bcolors = {"RED" : '\033[91m',
            "BLUE": '\033[94m',
@@ -13,18 +18,48 @@ bcolors = {"RED" : '\033[91m',
            
            } 
 
+def fileLines(path):
 
-def parseLog(path):
+    p = subprocess.Popen('wc -l ' +path, shell=True, stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+    out , err = p.communicate()
+
+    print out.split()[0]
+    return out.split()[0]
+
+def parseLog(path ):
+    i = 0
     with open(options.FileName) as f:
             for line in f:
+                i += 1
                 if line.find("secs:") != -1 and line.find("secs:") !=5:
                     time = line.split(":")[1]
-                    #print bcolors["RED"] + line.split(":")[0] + ":"+ datetime.utcfromtimestamp(int(time)).strftime('%Y-%m-%d %H:%M:%S')
-                    print line.split(":")[0] + ":"+ datetime.utcfromtimestamp(int(time)).strftime('%Y-%m-%d %H:%M:%S')
+                    if options.Time != None:
+
+                        if datetime.utcfromtimestamp(int(time)).strftime('%Y-%m-%d %H:%M:%S').find(options.Time) != -1:
+                            print line.split(":")[0] + ":"+ datetime.utcfromtimestamp(int(time)).strftime('%Y-%m-%d %H:%M:%S')                        
+                            match_time = True
+                        else:
+                            #print filelines
+                            #percent = int(i) / int(filelines)*100
+                            #print i,filelines,percent
+                            #print "Serching file  [%d%%]\r" %percent,
+                           
+                            match_time = False
+                    else:
+                        #print bcolors["RED"] + line.split(":")[0] + ":"+ datetime.utcfromtimestamp(int(time)).strftime('%Y-%m-%d %H:%M:%S')
+                        print line.split(":")[0] + ":"+ datetime.utcfromtimestamp(int(time)).strftime('%Y-%m-%d %H:%M:%S')
                 elif line.find("msg:") != -1 :
                     #st = line.rstrip()
                     #print bcolors["BLUE"] + st.split(":")[0] +bcolors["ENDC"] + ":"+ st.split(":")[1]
-                    print line.rstrip()
+                    if options.Time != None:
+                        if match_time == True:
+                            print line.rstrip()
+
+                        match_time = False
+                    else:
+                        print line.rstrip()
+            else:
+                print "End of File"
 
 
 if __name__ == '__main__':
@@ -41,16 +76,28 @@ if __name__ == '__main__':
                          type = "string",
                          dest = "FileName",
                          help = "input file name,relative path or absolute path")
+    
+    optParser.add_option("-t",
+                         "--time",
+                         action = "store",
+                         type = "string",
+                         dest = "Time",
+                         help = "time filter, for example: YYYY-MM-DD")
 
     options, args = optParser.parse_args()
 
     currentPath = os.getcwd()+ "/"
 
+    #if options.Time != None :
+    #    print  options.Time ,options.FileName
     
     if options.FileName != None :
         if os.path.isfile(options.FileName) :
-            parseLog(options.FileName)
+            #filelines = fileLines(options.FileName)
+            
+            parseLog(options.FileName )
         elif os.path.isfile(currentPath + options.FileName):
+            #filelines = fileLines(options.FileName)
             parseLog(currentPath + options.FileName)
         else:
             print "Error: file not exist"
