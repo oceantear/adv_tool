@@ -1,5 +1,5 @@
 # adv_tool
-Dynamic change Unix time stamp to YYYY-MM-
+Dynamic change Unix time stamp to YYYY-MM-DD
 
 Tool Help
 ======
