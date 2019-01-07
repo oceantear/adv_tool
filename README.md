@@ -1,6 +1,6 @@
 # adv_gep.py
 
-Show informations (**msg** and **secs**, with **YYYY-MM-DD format**) in console 
+Show informations (**msg** and **secs**, with **YYYY-MM-DD** format) in console 
 
 Tool Command
 ======
