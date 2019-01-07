@@ -1,5 +1,6 @@
 # adv_gep.py
-Dynamic change Unix time stamp to YYYY-MM-DD
+
+Show informations (msg and secs, with YYYY-MM-DD format) in console 
 
 Tool Command
 ======
