@@ -11,6 +11,9 @@ Tool Command
 
 <pre>adv_grep -h </pre>
 
+--version, show tool version
+======
+
 -f, which file want to be processed
 ======
 
