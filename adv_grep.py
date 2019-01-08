@@ -36,7 +36,7 @@ def parseLog(path ):
                     if options.Time != None:
 
                         if datetime.utcfromtimestamp(int(time)).strftime('%Y-%m-%d %H:%M:%S').find(options.Time) != -1:
-                            print line.split(":")[0] + ":"+ datetime.utcfromtimestamp(int(time)).strftime('%Y-%m-%d %H:%M:%S')                        
+                            print line.split(":")[0] + ": "+ datetime.utcfromtimestamp(int(time)).strftime('%Y-%m-%d %H:%M:%S')                        
                             match_time = True
                         else:
                             #print filelines
@@ -47,7 +47,7 @@ def parseLog(path ):
                             match_time = False
                     else:
                         #print bcolors["RED"] + line.split(":")[0] + ":"+ datetime.utcfromtimestamp(int(time)).strftime('%Y-%m-%d %H:%M:%S')
-                        print line.split(":")[0] + ":"+ datetime.utcfromtimestamp(int(time)).strftime('%Y-%m-%d %H:%M:%S')
+                        print line.split(":")[0] + ": "+ datetime.utcfromtimestamp(int(time)).strftime('%Y-%m-%d %H:%M:%S')
                 elif line.find("msg:") != -1 :
                     #st = line.rstrip()
                     #print bcolors["BLUE"] + st.split(":")[0] +bcolors["ENDC"] + ":"+ st.split(":")[1]
